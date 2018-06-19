@@ -22,16 +22,36 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp',(err,db)=>{
     // },(err)=>{
     //     console.log('unable to fetch todos ',err);
     // });
-    // delete many
-//    db.collection('Todos').deleteMany({text:'Eat lunch'}).then((result)=>{
-//         console.log(result);
-//    })
-    //delete one
-    // db.collection('Todos').deleteOne({text:'Eat lunch'}).then((result)=>{
-    //     console.log(result);
-    // })
-    //find one and delete
-    db.collections('Todos').findOneAndDelete({text:'Eat lunch'});
+    db.collection('Todos').find().count().then((count)=>{
+        console.log(`count todos : ${count}`);
+    },(err)=>{
+        console.log('unable to fetch todos ',err);
+    });
+
+   db.collection('Todos').findOneAndUpdate({
+       _id:new ObjectId('5b28c038e70b937d34b37cd3')
+   },{
+       $set:{
+           completed:true
+       }
+   },{
+       returnOriginal:false
+   }).then((result)=>{
+       console.log(result);
+   })
+
+   db.collection('Users').findOneAndUpdate({name:'rachit'},{
+       $set:{
+           name:'apoorva'
+       },
+       $inc:{
+         age: 1 
+       }
+   },{
+       returnOriginal:false
+   }).then((result)=>{
+       console.log(result);
+   })
     //closes conenction
    // db.close();
 });
